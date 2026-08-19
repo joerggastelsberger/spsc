@@ -3,7 +3,12 @@ name = "spsc"
 version = "0.1.0"
 edition = "2024"
 
+[dev-dependencies]
+criterion = "0.8.2"
+
 [target.'cfg(loom)'.dependencies]
 loom = "0.7"
 
-[dependencies]
+[[bench]]
+name = "padded_vs_unpadded"
+harness = false
