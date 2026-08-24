@@ -49,7 +49,9 @@ fn timed_run(producer: impl FnOnce() + Send, consumer: impl FnOnce() + Send) -> 
 fn bench_ring_buffer(c: &mut Criterion) {
     let mut group = c.benchmark_group("spsc_ring_buffer");
     group.warm_up_time(Duration::from_secs(3));
-    group.sample_size(100);
+    group.measurement_time(Duration::from_secs(10));
+    group.sample_size(200);
+    group.noise_threshold(0.02);
 
     group.bench_function("unpadded", |b| {
         b.iter_custom(|iters| {
