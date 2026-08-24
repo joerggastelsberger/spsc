@@ -11,9 +11,9 @@ use crate::sync::{Arc, AtomicUsize, Ordering, UnsafeCell};
 
 /// An index alone on its own cache line.
 ///
-/// 128 rather than 64: Apple Silicon uses 128-byte lines, and on x86_64 the
-/// adjacent-line prefetcher makes 128 bytes the effective destructive
-/// interference range (same reasoning as crossbeam's `CachePadded`).
+/// 128 rather than 64: On x86_64 the adjacent-line prefetcher makes  
+/// 128 bytes the effective destructive interference range
+/// (same reasoning as crossbeam's `CachePadded`).
 #[repr(align(128))]
 struct CacheAligned(AtomicUsize);
 
