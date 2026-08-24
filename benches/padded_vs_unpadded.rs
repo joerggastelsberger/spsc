@@ -10,6 +10,7 @@ use std::sync::Barrier;
 use std::thread;
 use std::time::{Duration, Instant};
 
+use core_affinity::CoreId;
 use criterion::{criterion_group, criterion_main, Criterion};
 use spsc::{padded, unpadded};
 
@@ -25,11 +26,13 @@ fn timed_run(producer: impl FnOnce() + Send, consumer: impl FnOnce() + Send) -> 
     let mut elapsed = Duration::ZERO;
     thread::scope(|s| {
         s.spawn(move || {
+            core_affinity::set_for_current(CoreId { id: 2 });
             start.wait();
             producer();
             stop.wait();
         });
         s.spawn(move || {
+            core_affinity::set_for_current(CoreId { id: 3 });
             start.wait();
             consumer();
             stop.wait();
